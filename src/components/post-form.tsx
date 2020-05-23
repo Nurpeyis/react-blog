@@ -66,7 +66,7 @@ const PostForm: React.FC<Props> = ({ initialState, onSubmit }) => {
             type="submit"
             disabled={isLoading || !state.title.length || !state.body.length}
           >
-            {isLoading ? 'Creating...' : 'Create'}
+            {isLoading ? 'Saving...' : 'Save'}
           </Button>
         </FormElement>
       </form>
