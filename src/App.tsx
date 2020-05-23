@@ -1,26 +1,48 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Switch, Route } from 'react-router-dom';
+import styled from '@emotion/styled';
 
-function App() {
+import Header from './components/header';
+import Container from './components/container';
+import Posts from './pages/posts';
+import PostDetail from './pages/post-detail';
+import PostEdit from './pages/post-edit';
+import PostCreate from './pages/post-create';
+
+const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+
+      <Main>
+        <Container>
+          <Switch>
+            <Route exact path="/">
+              <Posts />
+            </Route>
+
+            <Route exact path="/posts/create">
+              <PostCreate />
+            </Route>
+
+            <Route exact path="/posts/:id/edit">
+              <PostEdit />
+            </Route>
+
+            <Route exact path="/posts/:id">
+              <PostDetail />
+            </Route>
+
+            <Route path="*">Page Not Found</Route>
+          </Switch>
+        </Container>
+      </Main>
     </div>
   );
-}
+};
 
 export default App;
+
+const Main = styled.main`
+  padding: 2rem 0;
+`;
