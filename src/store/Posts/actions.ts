@@ -2,18 +2,23 @@ import { Action, ActionCreator } from "redux";
 
 import { PostType, SinglePostType } from "../../interfaces/store-interface";
 import { CommentsActionTypes } from "../Comments/actions";
-import { getPosts, getPostDetail, createPost, updatePost } from "../../api";
+import { getPosts, getPostDetail, createPost, updatePost, removePost } from "../../api";
 import { history } from "../../history";
 
 export enum PostsActionTypes {
   FETCH_POSTS = "FETCH_POSTS",
   FETCH_POST_DETAIL = "FETCH_POST_DETAIL",
   CREATE_POST = "CREATE_POST",
+  DELETE_POST = "DELETE_POST",
   SET_LOADER = "SET_LOADER",
 }
 
 export interface CreatePost extends Action<PostsActionTypes.CREATE_POST> {
   payload: PostType
+}
+
+export interface DeletePost extends Action<PostsActionTypes.SET_LOADER> {
+  payload: number
 }
 
 export interface GetPosts extends Action<PostsActionTypes.FETCH_POSTS> {
@@ -117,6 +122,31 @@ export const editPost = (post: Omit<PostType, 'author'>) => async (dispatch: Act
     });
 
     history.push(`/posts/${post.id}`)
+  } catch (error) {
+  }
+
+  dispatch({
+    type: PostsActionTypes.SET_LOADER,
+    payload: false
+  });
+}
+
+// Delete Post
+export const deletePost = (id: number) => async (dispatch: ActionCreator<DeletePost>) => {
+  dispatch({
+    type: PostsActionTypes.SET_LOADER,
+    payload: true
+  });
+
+  try {
+    await removePost(id);
+
+    dispatch({
+      type: PostsActionTypes.DELETE_POST,
+      payload: id
+    });
+
+    history.push(`/`)
   } catch (error) {
   }
 
